@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="[FIRMENNAME] – Ihr Spezialist für Luftfahrtversicherung. Private Jets, Privatpiloten, Drohnen und Luftfahrtunternehmen. Beratung in [REGION].">
+  <title>[FIRMENNAME] – Luftfahrtversicherung | Spezialist für Private Jets</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈</text></svg>">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "InsuranceAgency",
+    "name": "[FIRMENNAME]",
+    "description": "Spezialist für Luftfahrtversicherung – Private Jets, Privatpiloten, Drohnen",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "[STRASSE]",
+      "addressLocality": "[STADT]",
+      "postalCode": "[PLZ]",
+      "addressCountry": "DE"
+    },
+    "telephone": "[TELEFON]",
+    "email": "[EMAIL]",
+    "areaServed": "DE",
+    "url": ""
+  }
+  </script>
+
+  <!--
+    ⚠️ RECHTLICHER HINWEIS FÜR DEN KUNDEN ⚠️
+    Luftfahrtversicherung ist stark reguliert. Bitte vor Website-Launch prüfen:
+    1. BaFin-Registrierungsnummer korrekt eingetragen (§ 34d GewO)?
+    2. IDD-Pflichtangaben vollständig (EU-Versicherungsvertriebsrichtlinie)?
+    3. Datenschutzerklärung deckt Kontaktformular-Datenverarbeitung ab?
+    4. Impressum vollständig nach § 5 TMG?
+    5. VVG-Pflichthinweise im Footer vorhanden?
+    → Bitte einen Fachanwalt für Versicherungsrecht oder Compliance-Berater hinzuziehen!
+  -->
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES
+    ============================================================ */
+    :root {
+      --color-accent:      #185FA5;
+      --color-accent-dark: #0F3F6E;
+      --color-dark:        #1A1A1A;
+      --color-bg:          #FFFFFF;
+      --color-bg-alt:      #F4F5F7;
+      --color-bg-dark:     #0D1B2A;
+      --color-text:        #2C2C2C;
+      --color-text-muted:  #6B7280;
+      --color-border:      #E5E7EB;
+      --color-white:       #FFFFFF;
+      --color-gold:        #C9A84C;
+
+      --font-serif: 'Georgia', 'Times New Roman', serif;
+      --font-sans:  -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--color-text);
+      background: var(--color-bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ============================================================
+       ANIMATION
+    ============================================================ */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-section {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-in-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       TYPOGRAPHY HELPERS
+    ============================================================ */
+    h1, h2, h3 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      line-height: 1.2;
+    }
+    h1 { font-size: clamp(36px, 5vw, 60px); }
+    h2 { font-size: clamp(28px, 3.5vw, 42px); }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 18px;
+    }
+    .tag--gold  { color: var(--color-gold); }
+    .tag--white { color: rgba(255,255,255,0.65); }
+
+    .gold-line {
+      width: 40px;
+      height: 1px;
+      background: var(--color-gold);
+      margin: 20px 0 32px;
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 13px 32px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn--primary { background: var(--color-accent); color: var(--color-white); }
+    .btn--ghost {
+      background: transparent;
+      color: var(--color-white);
+      border-bottom: 1px solid rgba(255,255,255,0.55);
+      border-radius: 0;
+      padding-left: 0;
+      padding-right: 4px;
+    }
+    .btn--ghost:hover { border-bottom-color: #fff; opacity: 1; }
+
+    /* ============================================================
+       IMAGE PLACEHOLDERS
+    ============================================================ */
+    .hero-placeholder {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #0D1B2A 0%, #1a3a5c 60%, #0f2944 100%);
+    }
+    .expertise-img {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: #C0CBD6;
+      max-height: 540px;
+      object-fit: cover;
+    }
+
+    /* ============================================================
+       LAYOUT HELPERS
+    ============================================================ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .section        { padding: 120px 0; }
+    .section--alt   { background: var(--color-bg-alt); }
+    .section--dark  { background: var(--color-bg-dark); }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .nav__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--color-dark);
+      flex-shrink: 0;
+    }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .nav__links a {
+      font-size: 14px;
+      color: var(--color-text);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--color-accent); }
+    .nav__cta {
+      background: var(--color-accent) !important;
+      color: var(--color-white) !important;
+      padding: 10px 20px !important;
+      border-radius: 4px;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      min-height: 48px;
+      display: inline-flex !important;
+      align-items: center;
+      transition: background 0.2s !important;
+    }
+    .nav__cta:hover { background: var(--color-accent-dark) !important; opacity: 1 !important; }
+
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px;
+      min-width: 48px;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav__hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--color-dark);
+    }
+    .nav__mobile {
+      display: none;
+      flex-direction: column;
+      background: var(--color-bg);
+      border-top: 1px solid var(--color-border);
+      padding: 20px 24px 28px;
+      gap: 4px;
+    }
+    .nav__mobile.open { display: flex; }
+    .nav__mobile a {
+      font-size: 16px;
+      color: var(--color-text);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .nav__mobile a:last-child { border-bottom: none; margin-top: 12px; }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 56vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10,20,35,0.55);
+      z-index: 1;
+    }
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 24px;
+      width: 100%;
+    }
+    /* TEXT: HERO-HEADLINE */
+    .hero__headline {
+      color: var(--color-white);
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+    /* TEXT: HERO-SUBTEXT */
+    .hero__subtext {
+      color: rgba(255,255,255,0.85);
+      font-size: 18px;
+      font-weight: 300;
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+    /* TEXT: HERO-CTA */
+    .hero__actions {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================================
+       TRUST BAR
+    ============================================================ */
+    /* TEXT: VERTRAUEN-LEISTE */
+    .trust-bar { background: var(--color-bg-dark); }
+    .trust-bar__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 24px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+    .trust-bar__item {
+      flex: 1;
+      text-align: center;
+      padding: 12px 36px;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      position: relative;
+    }
+    .trust-bar__item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 28px;
+      width: 1px;
+      background: var(--color-gold);
+      opacity: 0.45;
+    }
+
+    /* ============================================================
+       PRODUCTS
+    ============================================================ */
+    /* TEXT: PRODUKTE-HEADLINE */
+    .products__header { margin-bottom: 52px; }
+    .products__list   { border-top: 1px solid var(--color-border); }
+
+    /* TEXT: PRODUKT-1 bis PRODUKT-5 */
+    .product-item {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      padding: 26px 16px;
+      margin: 0 -16px;
+      border-bottom: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    .product-item:hover { background: var(--color-bg); }
+    .product-item__name {
+      font-weight: 500;
+      font-size: 18px;
+      color: var(--color-dark);
+      flex: 0 0 280px;
+    }
+    .product-item__desc {
+      flex: 1;
+      font-size: 15px;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+    .product-item__arrow {
+      font-size: 20px;
+      color: var(--color-text-muted);
+      transition: color 0.18s;
+      flex-shrink: 0;
+    }
+    .product-item:hover .product-item__arrow { color: var(--color-accent); }
+    .products__note {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-top: 28px;
+      line-height: 1.7;
+      max-width: 760px;
+    }
+
+    /* ============================================================
+       EXPERTISE
+    ============================================================ */
+    /* TEXT: EXPERTISE-HEADLINE */
+    /* TEXT: EXPERTISE-TEXT */
+    /* TEXT: EXPERTISE-PUNKTE */
+    .expertise__layout {
+      display: grid;
+      grid-template-columns: 55% 43%;
+      gap: 80px;
+      align-items: center;
+    }
+    .expertise__headline {
+      color: var(--color-white);
+      margin-bottom: 28px;
+    }
+    .expertise__text {
+      color: rgba(255,255,255,0.78);
+      font-weight: 300;
+      line-height: 1.85;
+      font-size: 17px;
+      margin-bottom: 48px;
+    }
+    .expertise__points { border-top: 1px solid rgba(255,255,255,0.11); }
+    .expertise__point {
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.11);
+    }
+    .expertise__point-title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      color: var(--color-white);
+      margin-bottom: 5px;
+    }
+    .expertise__point-desc {
+      font-size: 15px;
+      color: rgba(255,255,255,0.58);
+      line-height: 1.65;
+    }
+
+    /* ============================================================
+       FAQ
+    ============================================================ */
+    /* TEXT: FAQ-HEADLINE */
+    /* TEXT: FAQ-1 bis FAQ-5 */
+    .faq__header { margin-bottom: 44px; }
+    .faq__list   { max-width: 820px; }
+
+    details.faq-item { border-bottom: 1px solid var(--color-border); }
+    details.faq-item:first-of-type { border-top: 1px solid var(--color-border); }
+    details.faq-item summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 500;
+      font-size: 17px;
+      color: var(--color-dark);
+      cursor: pointer;
+      padding: 22px 0;
+      list-style: none;
+      user-select: none;
+      gap: 16px;
+    }
+    details.faq-item summary::-webkit-details-marker { display: none; }
+    details.faq-item summary::after {
+      content: '+';
+      font-size: 24px;
+      font-weight: 300;
+      color: var(--color-accent);
+      transition: transform 0.28s;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    details.faq-item[open] summary::after { transform: rotate(45deg); }
+    .faq-answer {
+      color: var(--color-text-muted);
+      font-size: 15px;
+      line-height: 1.8;
+      padding: 4px 0 24px;
+      max-width: 700px;
+    }
+
+    /* ============================================================
+       CONTACT
+    ============================================================ */
+    /* TEXT: KONTAKT-HEADLINE */
+    /* TEXT: KONTAKT-DATEN */
+    .contact__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .contact__info-head { margin-bottom: 44px; }
+    .contact__info-head h2 { margin-bottom: 0; }
+    .contact__items { display: flex; flex-direction: column; gap: 28px; }
+    .contact__item  { display: flex; flex-direction: column; gap: 5px; }
+    .contact__label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+    }
+    .contact__value { font-size: 17px; color: var(--color-text); }
+    .contact__value a {
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .contact__value a:hover {
+      color: var(--color-accent);
+      border-bottom-color: var(--color-accent);
+    }
+
+    .contact__form { display: flex; flex-direction: column; gap: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .form-field { display: flex; flex-direction: column; gap: 8px; }
+    .form-field label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+    }
+    .form-field input,
+    .form-field textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--color-border);
+      border-radius: 0;
+      padding: 10px 0;
+      font-size: 16px;
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus { border-bottom-color: var(--color-accent); }
+    .form-field textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+    .form-note {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      line-height: 1.6;
+    }
+    #form-success {
+      display: none;
+      padding: 16px 20px;
+      border-left: 2px solid var(--color-accent);
+      font-size: 15px;
+      color: var(--color-text-muted);
+      background: var(--color-bg);
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    /* TEXT: FOOTER */
+    .footer {
+      background: var(--color-dark);
+      padding: 80px 0 0;
+    }
+    .footer__grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px 64px;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: 64px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      color: var(--color-white);
+      margin-bottom: 12px;
+    }
+    .footer__tagline {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 20px;
+      line-height: 1.65;
+    }
+    .footer__address {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.8;
+    }
+    .footer__col-title {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 20px;
+    }
+    .footer__nav { display: flex; flex-direction: column; gap: 12px; }
+    .footer__nav a {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      transition: color 0.2s;
+    }
+    .footer__nav a:hover { color: var(--color-white); }
+    .footer__contact-item {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+    .footer__contact-item a {
+      color: rgba(255,255,255,0.65);
+      transition: color 0.2s;
+      border-bottom: 1px solid transparent;
+    }
+    .footer__contact-item a:hover {
+      color: var(--color-white);
+      border-bottom-color: rgba(255,255,255,0.25);
+    }
+    .footer__bafin {
+      font-size: 12px;
+      color: rgba(255,255,255,0.38);
+      margin-top: 16px;
+      line-height: 1.7;
+    }
+    .footer__bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 24px;
+      border-top: 1px solid rgba(255,255,255,0.09);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer__copy {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+    }
+    .footer__legal-links { display: flex; gap: 20px; }
+    .footer__legal-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.2s;
+    }
+    .footer__legal-links a:hover { color: rgba(255,255,255,0.75); }
+
+    /* TEXT: PFLICHTHINWEISE */
+    .footer__disclaimer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px 24px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 13px;
+      color: rgba(255,255,255,0.42);
+      line-height: 1.7;
+    }
+
+    /* TEXT: SIGNATURE */
+    .footer__signature {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      padding: 18px 24px 28px;
+      font-family: var(--font-sans);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer__signature a {
+      color: rgba(255,255,255,0.35);
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: color 0.2s;
+    }
+    .footer__signature a:hover { color: rgba(255,255,255,0.6); }
+
+    /* ============================================================
+       LEGAL (Impressum / Datenschutz)
+    ============================================================ */
+    .legal-wrap {
+      background: var(--color-dark);
+      padding: 0 0 48px;
+    }
+    .legal-wrap .container {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 32px;
+    }
+    details.legal-item { margin-bottom: 4px; }
+    details.legal-item summary {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-accent);
+      cursor: pointer;
+      padding: 14px 0;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    details.legal-item summary::-webkit-details-marker { display: none; }
+    details.legal-item summary::before {
+      content: '›';
+      font-size: 18px;
+      transition: transform 0.22s;
+      display: inline-block;
+      line-height: 1;
+    }
+    details.legal-item[open] summary::before { transform: rotate(90deg); }
+    .legal-content {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.85;
+      padding: 20px 0 32px 20px;
+      max-width: 800px;
+    }
+    .legal-content h4 {
+      color: rgba(255,255,255,0.7);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin: 22px 0 8px;
+    }
+    .legal-content h4:first-child { margin-top: 0; }
+    .legal-content p { margin-bottom: 10px; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 960px) {
+      .expertise__layout {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+      .expertise__img-wrap { order: -1; }
+      .contact__layout {
+        grid-template-columns: 1fr;
+        gap: 52px;
+      }
+      .footer__grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .section { padding: 60px 0; }
+      .nav__links { display: none; }
+      .nav__hamburger { display: flex; }
+
+      .trust-bar__inner {
+        flex-direction: column;
+        padding: 0;
+      }
+      .trust-bar__item {
+        padding: 18px 24px;
+        text-align: left;
+        border-bottom: 1px solid rgba(201,168,76,0.18);
+      }
+      .trust-bar__item:last-child { border-bottom: none; }
+      .trust-bar__item::after { display: none !important; }
+
+      .product-item { flex-wrap: wrap; gap: 8px; }
+      .product-item__name { flex: 0 0 100%; }
+
+      .form-row { grid-template-columns: 1fr; }
+
+      .footer__grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+      .footer__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero__actions { flex-direction: column; align-items: flex-start; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGATION
+============================================================ -->
+<nav class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="#" class="nav__logo">[FIRMENNAME]</a>
+
+    <div class="nav__links">
+      <a href="#versicherungen">Versicherungen</a>
+      <a href="#ueber-uns">Über uns</a>
+      <a href="#faq">FAQ</a>
+      <a href="#kontakt">Kontakt</a>
+      <a href="#kontakt" class="nav__cta">Beratung anfragen</a>
+    </div>
+
+    <button class="nav__hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <div class="nav__mobile" id="mobileMenu" role="navigation">
+    <a href="#versicherungen">Versicherungen</a>
+    <a href="#ueber-uns">Über uns</a>
+    <a href="#faq">FAQ</a>
+    <a href="#kontakt">Kontakt</a>
+    <a href="#kontakt" class="btn btn--primary" style="text-align:center;">Beratung anfragen</a>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO SECTION
+============================================================ -->
+<section class="hero">
+  <div class="hero-placeholder" role="img" aria-label="Privatjet auf einem Rollfeld bei Sonnenuntergang"></div>
+  <div class="hero__overlay"></div>
+
+  <div class="hero__content">
+    <!-- TEXT: HERO-HEADLINE -->
+    <span class="tag tag--gold">Luftfahrtversicherung</span>
+    <h1 class="hero__headline">Vertrauen auf<br>10.000 Fuß.</h1>
+    <div class="gold-line" style="margin:0 0 28px;"></div>
+
+    <!-- TEXT: HERO-SUBTEXT -->
+    <p class="hero__subtext">Spezialisierte Versicherungslösungen für Privatpiloten, Private Jets und Luftfahrtunternehmen — von Experten, denen Sie vertrauen können.</p>
+
+    <!-- TEXT: HERO-CTA -->
+    <div class="hero__actions">
+      <a href="#kontakt" class="btn btn--primary">Beratung anfragen</a>
+      <a href="#versicherungen" class="btn btn--ghost">Unsere Leistungen &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TRUST BAR
+============================================================ -->
+<!-- TEXT: VERTRAUEN-LEISTE -->
+<div class="trust-bar">
+  <div class="trust-bar__inner">
+    <div class="trust-bar__item">[ZAHL]+ Jahre Erfahrung &nbsp;·&nbsp; Seit [JAHR] am Markt</div>
+    <div class="trust-bar__item">BaFin-registriert &nbsp;·&nbsp; Nr. [BAFIN-NR]</div>
+    <div class="trust-bar__item">Spezialist für Luftfahrtversicherung in [REGION]</div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PRODUCTS SECTION
+============================================================ -->
+<section class="section section--alt fade-in-section" id="versicherungen">
+  <div class="container">
+    <!-- TEXT: PRODUKTE-HEADLINE -->
+    <div class="products__header">
+      <span class="tag">Unsere Leistungen</span>
+      <h2>Was wir für Sie absichern.</h2>
+    </div>
+
+    <div class="products__list">
+      <!-- TEXT: PRODUKT-1 -->
+      <div class="product-item" role="button" tabindex="0"
+           onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})"
+           onkeypress="if(event.key==='Enter')document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">
+        <div class="product-item__name">[PRODUKT 1, z.B. „Privatpiloten-Haftpflicht"]</div>
+        <div class="product-item__desc">[1 Satz Beschreibung: Wer braucht es, was deckt es ab?]</div>
+        <div class="product-item__arrow">&rarr;</div>
+      </div>
+
+      <!-- TEXT: PRODUKT-2 -->
+      <div class="product-item" role="button" tabindex="0"
+           onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})"
+           onkeypress="if(event.key==='Enter')document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">
+        <div class="product-item__name">[PRODUKT 2, z.B. „Private Jet Vollkasko"]</div>
+        <div class="product-item__desc">[1 Satz Beschreibung: Wer braucht es, was deckt es ab?]</div>
+        <div class="product-item__arrow">&rarr;</div>
+      </div>
+
+      <!-- TEXT: PRODUKT-3 -->
+      <div class="product-item" role="button" tabindex="0"
+           onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})"
+           onkeypress="if(event.key==='Enter')document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">
+        <div class="product-item__name">[PRODUKT 3, z.B. „Passagier-Unfallversicherung"]</div>
+        <div class="product-item__desc">[1 Satz Beschreibung: Wer braucht es, was deckt es ab?]</div>
+        <div class="product-item__arrow">&rarr;</div>
+      </div>
+
+      <!-- TEXT: PRODUKT-4 -->
+      <div class="product-item" role="button" tabindex="0"
+           onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})"
+           onkeypress="if(event.key==='Enter')document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">
+        <div class="product-item__name">[PRODUKT 4, z.B. „Drohnen-Haftpflicht"]</div>
+        <div class="product-item__desc">[1 Satz Beschreibung: Wer braucht es, was deckt es ab?]</div>
+        <div class="product-item__arrow">&rarr;</div>
+      </div>
+
+      <!-- TEXT: PRODUKT-5 -->
+      <div class="product-item" role="button" tabindex="0"
+           onclick="document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})"
+           onkeypress="if(event.key==='Enter')document.getElementById('kontakt').scrollIntoView({behavior:'smooth'})">
+        <div class="product-item__name">[PRODUKT 5, z.B. „Flugschul-Versicherung"]</div>
+        <div class="product-item__desc">[1 Satz Beschreibung: Wer braucht es, was deckt es ab?]</div>
+        <div class="product-item__arrow">&rarr;</div>
+      </div>
+    </div>
+
+    <p class="products__note">Alle Versicherungsprodukte unterliegen den jeweiligen Versicherungsbedingungen. Eine verbindliche Aussage erfolgt nur im persönlichen Beratungsgespräch.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     EXPERTISE / WHY US
+============================================================ -->
+<section class="section section--dark fade-in-section" id="ueber-uns">
+  <div class="container">
+    <div class="expertise__layout">
+      <div>
+        <!-- TEXT: EXPERTISE-HEADLINE -->
+        <span class="tag tag--gold">Warum [FIRMENNAME]</span>
+        <h2 class="expertise__headline">Expertise, die Sie verdienen.</h2>
+        <div class="gold-line"></div>
+
+        <!-- TEXT: EXPERTISE-TEXT -->
+        <p class="expertise__text">[FIRMENNAME] ist auf Luftfahrtversicherungen spezialisiert — nicht als Randbereich, sondern als Kernkompetenz. Seit [JAHR] beraten wir Privatpiloten, Jet-Eigentümer und Luftfahrtunternehmen in [REGION] mit dem Anspruch, den Sie von einem erstklassigen Berater erwarten dürfen. Unser direkter Zugang zu führenden Luftfahrtversicherern in Europa erlaubt uns, Lösungen zu strukturieren, die Standardprodukte nicht bieten können.</p>
+
+        <!-- TEXT: EXPERTISE-PUNKTE -->
+        <div class="expertise__points">
+          <div class="expertise__point">
+            <div class="expertise__point-title">Spezialisierung.</div>
+            <div class="expertise__point-desc">Kein Allround-Makler — ausschließlich Luftfahrt. Diese Fokussierung sichert ein Beratungsniveau, das Generalisten nicht erreichen.</div>
+          </div>
+          <div class="expertise__point">
+            <div class="expertise__point-title">Netzwerk.</div>
+            <div class="expertise__point-desc">Direktzugang zu führenden Luftfahrtversicherern in Europa — für Konditionen, die Ihrem individuellen Risikoprofil gerecht werden.</div>
+          </div>
+          <div class="expertise__point">
+            <div class="expertise__point-title">Diskretion.</div>
+            <div class="expertise__point-desc">Ihre Daten, Ihre Flotte und Ihre Versicherungsdetails bleiben vertraulich. Selbstverständlich — aber es verdient Erwähnung.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="expertise__img-wrap">
+        <div class="expertise-img" role="img" aria-label="Cockpit eines Privatjets bei Nacht"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ SECTION
+============================================================ -->
+<section class="section fade-in-section" id="faq">
+  <div class="container">
+    <!-- TEXT: FAQ-HEADLINE -->
+    <div class="faq__header">
+      <span class="tag">Häufige Fragen</span>
+      <h2>Ihre Fragen.<br>Unsere Antworten.</h2>
+    </div>
+
+    <div class="faq__list">
+      <!-- TEXT: FAQ-1 -->
+      <details class="faq-item">
+        <summary>[FRAGE 1, z.B. „Wer braucht eine Privatpiloten-Haftpflichtversicherung?"]</summary>
+        <div class="faq-answer">[ANTWORT 1: Sachliche Antwort in 2–4 Sätzen, ohne Marketingsprache. Bitte vom Kunden befüllen.]</div>
+      </details>
+
+      <!-- TEXT: FAQ-2 -->
+      <details class="faq-item">
+        <summary>[FRAGE 2, z.B. „Was ist der Unterschied zwischen Haftpflicht und Vollkasko?"]</summary>
+        <div class="faq-answer">[ANTWORT 2: Sachliche Antwort in 2–4 Sätzen. Bitte vom Kunden befüllen.]</div>
+      </details>
+
+      <!-- TEXT: FAQ-3 -->
+      <details class="faq-item">
+        <summary>[FRAGE 3, z.B. „Wie hoch sollte die Deckungssumme sein?"]</summary>
+        <div class="faq-answer">[ANTWORT 3: Sachliche Antwort in 2–4 Sätzen. Bitte vom Kunden befüllen.]</div>
+      </details>
+
+      <!-- TEXT: FAQ-4 -->
+      <details class="faq-item">
+        <summary>[FRAGE 4, z.B. „Gilt die Versicherung auch im Ausland?"]</summary>
+        <div class="faq-answer">[ANTWORT 4: Sachliche Antwort in 2–4 Sätzen. Bitte vom Kunden befüllen.]</div>
+      </details>
+
+      <!-- TEXT: FAQ-5 -->
+      <details class="faq-item">
+        <summary>[FRAGE 5, z.B. „Wie läuft eine Beratung ab?"]</summary>
+        <div class="faq-answer">[ANTWORT 5: Sachliche Antwort in 2–4 Sätzen. Bitte vom Kunden befüllen.]</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT SECTION
+============================================================ -->
+<section class="section section--alt fade-in-section" id="kontakt">
+  <div class="container">
+    <div class="contact__layout">
+
+      <!-- Left: Contact Info -->
+      <div>
+        <!-- TEXT: KONTAKT-HEADLINE -->
+        <div class="contact__info-head">
+          <span class="tag">Kontakt</span>
+          <h2>Sprechen wir.</h2>
+          <div class="gold-line" style="margin-top:20px; margin-bottom:0;"></div>
+        </div>
+
+        <!-- TEXT: KONTAKT-DATEN -->
+        <div class="contact__items">
+          <div class="contact__item">
+            <span class="contact__label">Telefon</span>
+            <div class="contact__value">
+              <a href="tel:+49[NUMMER OHNE FÜHRENDE NULL]">[TELEFON]</a>
+            </div>
+          </div>
+          <div class="contact__item">
+            <span class="contact__label">E-Mail</span>
+            <div class="contact__value">
+              <a href="mailto:[EMAIL]">[EMAIL]</a>
+            </div>
+          </div>
+          <div class="contact__item">
+            <span class="contact__label">Adresse</span>
+            <div class="contact__value" style="font-size:16px; line-height:1.7;">
+              [STRASSE]<br>[PLZ] [STADT]
+            </div>
+          </div>
+          <div class="contact__item">
+            <span class="contact__label">BaFin-Registrierung</span>
+            <div class="contact__value" style="font-size:15px; color:var(--color-text-muted);">
+              Reg.-Nr. [BAFIN-NR]
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Contact Form -->
+      <div>
+        <form class="contact__form" id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="f-name">Name *</label>
+              <input type="text" id="f-name" name="name" required autocomplete="name" placeholder="Ihr Name">
+            </div>
+            <div class="form-field">
+              <label for="f-company">Firma</label>
+              <input type="text" id="f-company" name="company" autocomplete="organization" placeholder="Ihr Unternehmen">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="f-email">E-Mail *</label>
+              <input type="email" id="f-email" name="email" required autocomplete="email" placeholder="ihre@email.de">
+            </div>
+            <div class="form-field">
+              <label for="f-phone">Telefon</label>
+              <input type="tel" id="f-phone" name="phone" autocomplete="tel" placeholder="+49 ...">
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="f-message">Nachricht *</label>
+            <textarea id="f-message" name="message" required placeholder="Wie können wir Ihnen helfen?"></textarea>
+          </div>
+
+          <div>
+            <button type="submit" class="btn btn--primary" id="submitBtn">Anfrage senden</button>
+          </div>
+          <p class="form-note">Mit dem Absenden stimmen Sie unserer Datenschutzerklärung zu. Wir melden uns innerhalb von 24 Stunden.</p>
+
+          <div id="form-success">
+            Vielen Dank für Ihre Anfrage. Wir melden uns so schnell wie möglich bei Ihnen.
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<!-- TEXT: FOOTER -->
+<footer class="footer">
+  <div class="footer__grid">
+    <div>
+      <div class="footer__brand">[FIRMENNAME]</div>
+      <p class="footer__tagline">Ihr Spezialist für Luftfahrtversicherung in [REGION].</p>
+      <div class="footer__address">
+        [STRASSE]<br>[PLZ] [STADT]
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Navigation</div>
+      <nav class="footer__nav">
+        <a href="#versicherungen">Versicherungen</a>
+        <a href="#ueber-uns">Über uns</a>
+        <a href="#faq">FAQ</a>
+        <a href="#kontakt">Kontakt</a>
+        <a href="#impressum">Impressum</a>
+        <a href="#datenschutz">Datenschutz</a>
+      </nav>
+    </div>
+    <div>
+      <div class="footer__col-title">Kontakt</div>
+      <div class="footer__contact-item">
+        <a href="tel:+49[NUMMER OHNE FÜHRENDE NULL]">[TELEFON]</a>
+      </div>
+      <div class="footer__contact-item">
+        <a href="mailto:[EMAIL]">[EMAIL]</a>
+      </div>
+      <div class="footer__bafin">
+        BaFin-Reg.-Nr. [BAFIN-NR]<br>
+        Versicherungsvermittler gem. § 34d GewO
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <span class="footer__copy">© [JAHR] [FIRMENNAME]. Alle Rechte vorbehalten.</span>
+    <div class="footer__legal-links">
+      <a href="#impressum">Impressum</a>
+      <a href="#datenschutz">Datenschutz</a>
+    </div>
+  </div>
+
+  <!-- TEXT: PFLICHTHINWEISE -->
+  <div class="footer__disclaimer">
+    [FIRMENNAME] [RECHTSFORM] ist registrierter Versicherungsvermittler gemäß § 34d GewO. BaFin-Reg.-Nr.: [BAFIN-NR]. Aufsichtsbehörde: [ZUSTÄNDIGE IHK], [IHK-ADRESSE]. Die angebotenen Versicherungsprodukte unterliegen den jeweiligen Versicherungsbedingungen. Es gelten die Pflichtangaben gemäß IDD (EU-Richtlinie über den Versicherungsvertrieb 2016/97/EU).
+  </div>
+
+  <!-- TEXT: SIGNATURE -->
+  <p class="footer__signature">
+    Made with ♥ by Johannes Ben Toman &nbsp;·&nbsp;
+    <a href="mailto:tomandesign7@gmail.com">tomandesign7@gmail.com</a> &nbsp;·&nbsp;
+    Möchten Sie auch so eine Website? Schreiben Sie uns!
+  </p>
+</footer>
+
+<!-- ============================================================
+     IMPRESSUM & DATENSCHUTZ
+============================================================ -->
+<section class="legal-wrap">
+  <div class="container">
+
+    <details class="legal-item" id="impressum">
+      <summary>Impressum</summary>
+      <div class="legal-content">
+        <h4>Angaben gemäß § 5 TMG</h4>
+        <p>
+          [FIRMENNAME] [RECHTSFORM]<br>
+          [STRASSE]<br>
+          [PLZ] [STADT]
+        </p>
+        <p>
+          Vertreten durch: [NAME]<br>
+          Telefon: [TELEFON]<br>
+          E-Mail: [EMAIL]
+        </p>
+        <h4>Registereintrag</h4>
+        <p>[Handelsregistereintrag, Registergericht und HRB-Nummer, sofern vorhanden]</p>
+        <h4>Aufsichtsbehörde gemäß § 34d GewO</h4>
+        <p>
+          [ZUSTÄNDIGE IHK]<br>
+          [IHK-ADRESSE]<br>
+          BaFin-Registrierungsnummer: [BAFIN-NR]<br>
+          Vermittlerregister: www.vermittlerregister.info
+        </p>
+        <h4>Berufsrechtliche Regelungen</h4>
+        <p>
+          § 34d GewO (Versicherungsvermittler) · VersVermV (Versicherungsvermittlungsverordnung)<br>
+          IDD (EU-Richtlinie über den Versicherungsvertrieb 2016/97/EU)
+        </p>
+        <h4>Berufshaftpflichtversicherung (Pflichtangabe gem. IDD)</h4>
+        <p>[Name und Anschrift des Haftpflichtversicherers sowie räumlicher Geltungsbereich hier eintragen]</p>
+        <h4>Streitschlichtung</h4>
+        <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: https://ec.europa.eu/consumers/odr. Wir sind nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+        <p style="margin-top:16px; font-style:italic; opacity:0.7;">[IMPRESSUM-TEXT VOLLSTÄNDIG ERGÄNZEN — Pflichtangaben nach § 5 TMG und IDD. Rechtsanwalt hinzuziehen.]</p>
+      </div>
+    </details>
+
+    <details class="legal-item" id="datenschutz">
+      <summary>Datenschutzerklärung</summary>
+      <div class="legal-content">
+        <h4>Verantwortlicher</h4>
+        <p>
+          [FIRMENNAME] [RECHTSFORM]<br>
+          [STRASSE], [PLZ] [STADT]<br>
+          E-Mail: [EMAIL]
+        </p>
+        <h4>Erhebung personenbezogener Daten</h4>
+        <p>Wir erheben personenbezogene Daten nur, soweit dies für die Erbringung unserer Beratungsleistungen erforderlich ist. Bei Nutzung des Kontaktformulars werden folgende Daten verarbeitet: Name, E-Mail-Adresse, Telefonnummer, Firmenname und Nachrichteninhalt.</p>
+        <h4>Rechtsgrundlage</h4>
+        <p>Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) sowie Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Bearbeitung von Anfragen).</p>
+        <h4>Speicherdauer</h4>
+        <p>Personenbezogene Daten werden gelöscht, sobald der Zweck der Verarbeitung entfallen ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
+        <h4>Ihre Rechte</h4>
+        <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie Widerspruch. Bitte wenden Sie sich an: [EMAIL].</p>
+        <h4>Cookies &amp; Tracking</h4>
+        <p>Diese Website verwendet keine Tracking-Cookies und setzt keine Analyse-Tools ein.</p>
+        <p style="margin-top:16px; font-style:italic; opacity:0.7;">[DATENSCHUTZERKLÄRUNG VOLLSTÄNDIG EINFÜGEN — DSGVO-konform, inkl. Auftragsverarbeitungsvertrag mit Hosting-Anbieter. Datenschutzbeauftragten oder Rechtsanwalt hinzuziehen.]</p>
+      </div>
+    </details>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  // Hamburger menu
+  (function() {
+    var btn  = document.getElementById('hamburger');
+    var menu = document.getElementById('mobileMenu');
+
+    btn.addEventListener('click', function() {
+      var open = menu.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+      btn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    });
+
+    menu.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        menu.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+
+  // Fade-in via IntersectionObserver
+  (function() {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.fade-in-section').forEach(function(el) {
+        el.classList.add('visible');
+      });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in-section').forEach(function(el) {
+      observer.observe(el);
+    });
+  })();
+
+  // Smooth scroll for anchor links, accounting for sticky nav height
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var id = this.getAttribute('href').slice(1);
+      if (!id) return;
+      var target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      var navH = document.getElementById('nav').offsetHeight;
+      var top  = target.getBoundingClientRect().top + window.pageYOffset - navH - 12;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    });
+  });
+
+  // Contact form — placeholder submit handler
+  // ⚠️ Replace this with a real backend endpoint or email service (e.g. Formspree, Netlify Forms)
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var btn     = document.getElementById('submitBtn');
+    var success = document.getElementById('form-success');
+    var form    = this;
+
+    // Basic client-side validation
+    var name    = document.getElementById('f-name').value.trim();
+    var email   = document.getElementById('f-email').value.trim();
+    var message = document.getElementById('f-message').value.trim();
+
+    if (!name || !email || !message) {
+      alert('Bitte füllen Sie alle Pflichtfelder aus.');
+      return;
+    }
+
+    btn.disabled    = true;
+    btn.textContent = 'Wird gesendet …';
+
+    // Simulate async submit — replace with real fetch() call in production
+    setTimeout(function() {
+      form.reset();
+      btn.disabled    = false;
+      btn.textContent = 'Anfrage senden';
+      success.style.display = 'block';
+
+      setTimeout(function() {
+        success.style.display = 'none';
+      }, 10000);
+    }, 1000);
+  });
+</script>
+
+</body>
+</html>
