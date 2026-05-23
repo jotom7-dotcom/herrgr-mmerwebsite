@@ -727,6 +727,69 @@
     .legal-content p { margin-bottom: 10px; }
 
     /* ============================================================
+       LANGUAGE SWITCHER
+    ============================================================ */
+    .lang-switcher {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .lang-switcher__btn {
+      background: none;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 36px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .lang-switcher__btn:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+    .lang-switcher__arrow {
+      font-size: 9px;
+      opacity: 0.5;
+      transition: transform 0.2s;
+    }
+    .lang-switcher.open .lang-switcher__arrow { transform: rotate(180deg); }
+    .lang-switcher__dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+      z-index: 200;
+      min-width: 150px;
+      overflow: hidden;
+    }
+    .lang-switcher.open .lang-switcher__dropdown { display: block; }
+    .lang-switcher__option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      font-size: 14px;
+      color: var(--color-text);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .lang-switcher__option:hover { background: var(--color-bg-alt); }
+    .lang-switcher__option.active {
+      color: var(--color-accent);
+      font-weight: 500;
+    }
+    .lang-flag { font-size: 16px; line-height: 1; }
+
+    /* ============================================================
        RESPONSIVE
     ============================================================ */
     @media (max-width: 960px) {
@@ -795,6 +858,21 @@
       <a href="#faq">FAQ</a>
       <a href="#kontakt">Kontakt</a>
       <a href="#kontakt" class="nav__cta">Beratung anfragen</a>
+    </div>
+
+    <div class="lang-switcher" id="langSwitcher">
+      <button class="lang-switcher__btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Sprache wählen">
+        <span id="langCurrentFlag">🇩🇪</span>
+        <span id="langCurrentCode">DE</span>
+        <span class="lang-switcher__arrow">▼</span>
+      </button>
+      <div class="lang-switcher__dropdown" role="listbox">
+        <div class="lang-switcher__option active" role="option" data-lang="de" onclick="setLanguage('de')"><span class="lang-flag">🇩🇪</span> Deutsch</div>
+        <div class="lang-switcher__option" role="option" data-lang="en" onclick="setLanguage('en')"><span class="lang-flag">🇬🇧</span> English</div>
+        <div class="lang-switcher__option" role="option" data-lang="fr" onclick="setLanguage('fr')"><span class="lang-flag">🇫🇷</span> Français</div>
+        <div class="lang-switcher__option" role="option" data-lang="es" onclick="setLanguage('es')"><span class="lang-flag">🇪🇸</span> Español</div>
+        <div class="lang-switcher__option" role="option" data-lang="zh" onclick="setLanguage('zh')"><span class="lang-flag">🇨🇳</span> 中文</div>
+      </div>
     </div>
 
     <button class="nav__hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false">
@@ -1286,18 +1364,18 @@
     var message = document.getElementById('f-message').value.trim();
 
     if (!name || !email || !message) {
-      alert('Bitte füllen Sie alle Pflichtfelder aus.');
+      alert(window._formAlert || 'Bitte füllen Sie alle Pflichtfelder aus.');
       return;
     }
 
     btn.disabled    = true;
-    btn.textContent = 'Wird gesendet …';
+    btn.textContent = window._formSending || 'Wird gesendet …';
 
     // Simulate async submit — replace with real fetch() call in production
     setTimeout(function() {
       form.reset();
       btn.disabled    = false;
-      btn.textContent = 'Anfrage senden';
+      btn.textContent = window._formSubmit || 'Anfrage senden';
       success.style.display = 'block';
 
       setTimeout(function() {
@@ -1305,6 +1383,283 @@
       }, 10000);
     }, 1000);
   });
+</script>
+
+<script>
+(function() {
+  var currentLang = 'de';
+  var flags = { de: '🇩🇪', en: '🇬🇧', fr: '🇫🇷', es: '🇪🇸', zh: '🇨🇳' };
+  var codes = { de: 'DE', en: 'EN', fr: 'FR', es: 'ES', zh: 'ZH' };
+
+  var t = {
+    de: {
+      nav_versicherungen: 'Versicherungen', nav_ueber_uns: 'Über uns', nav_faq: 'FAQ', nav_kontakt: 'Kontakt', nav_cta: 'Beratung anfragen',
+      hero_tag: 'Luftfahrtversicherung', hero_headline: 'Vertrauen auf<br>10.000 Fuß.',
+      hero_subtext: 'Spezialisierte Versicherungslösungen für Privatpiloten, Private Jets und Luftfahrtunternehmen — von Experten, denen Sie vertrauen können.',
+      hero_cta1: 'Beratung anfragen', hero_cta2: 'Unsere Leistungen &rarr;',
+      trust_1: '[ZAHL]+ Jahre Erfahrung &nbsp;·&nbsp; Seit [JAHR] am Markt', trust_2: 'BaFin-registriert &nbsp;·&nbsp; Nr. [BAFIN-NR]', trust_3: 'Spezialist für Luftfahrtversicherung in [REGION]',
+      products_tag: 'Unsere Leistungen', products_h2: 'Was wir für Sie absichern.', products_note: 'Alle Versicherungsprodukte unterliegen den jeweiligen Versicherungsbedingungen. Eine verbindliche Aussage erfolgt nur im persönlichen Beratungsgespräch.',
+      expertise_tag: 'Warum [FIRMENNAME]', expertise_h2: 'Expertise, die Sie verdienen.',
+      expertise_text: '[FIRMENNAME] ist auf Luftfahrtversicherungen spezialisiert — nicht als Randbereich, sondern als Kernkompetenz. Seit [JAHR] beraten wir Privatpiloten, Jet-Eigentümer und Luftfahrtunternehmen in [REGION] mit dem Anspruch, den Sie von einem erstklassigen Berater erwarten dürfen. Unser direkter Zugang zu führenden Luftfahrtversicherern in Europa erlaubt uns, Lösungen zu strukturieren, die Standardprodukte nicht bieten können.',
+      exp_p1_title: 'Spezialisierung.', exp_p1_desc: 'Kein Allround-Makler — ausschließlich Luftfahrt. Diese Fokussierung sichert ein Beratungsniveau, das Generalisten nicht erreichen.',
+      exp_p2_title: 'Netzwerk.', exp_p2_desc: 'Direktzugang zu führenden Luftfahrtversicherern in Europa — für Konditionen, die Ihrem individuellen Risikoprofil gerecht werden.',
+      exp_p3_title: 'Diskretion.', exp_p3_desc: 'Ihre Daten, Ihre Flotte und Ihre Versicherungsdetails bleiben vertraulich. Selbstverständlich — aber es verdient Erwähnung.',
+      faq_tag: 'Häufige Fragen', faq_h2: 'Ihre Fragen.<br>Unsere Antworten.',
+      contact_tag: 'Kontakt', contact_h2: 'Sprechen wir.',
+      contact_label_phone: 'Telefon', contact_label_email: 'E-Mail', contact_label_address: 'Adresse', contact_label_bafin: 'BaFin-Registrierung',
+      form_label_name: 'Name *', form_label_company: 'Firma', form_label_email: 'E-Mail *', form_label_phone: 'Telefon', form_label_message: 'Nachricht *',
+      form_placeholder_name: 'Ihr Name', form_placeholder_company: 'Ihr Unternehmen', form_placeholder_email: 'ihre@email.de', form_placeholder_phone: '+49 ...', form_placeholder_message: 'Wie können wir Ihnen helfen?',
+      form_submit: 'Anfrage senden', form_sending: 'Wird gesendet …', form_note: 'Mit dem Absenden stimmen Sie unserer Datenschutzerklärung zu. Wir melden uns innerhalb von 24 Stunden.',
+      form_success: 'Vielen Dank für Ihre Anfrage. Wir melden uns so schnell wie möglich bei Ihnen.', form_alert: 'Bitte füllen Sie alle Pflichtfelder aus.',
+      footer_tagline: 'Ihr Spezialist für Luftfahrtversicherung in [REGION].', footer_nav_title: 'Navigation', footer_contact_title: 'Kontakt',
+      footer_nav_versicherungen: 'Versicherungen', footer_nav_ueber_uns: 'Über uns', footer_nav_faq: 'FAQ', footer_nav_kontakt: 'Kontakt', footer_nav_impressum: 'Impressum', footer_nav_datenschutz: 'Datenschutz',
+      footer_bafin: 'BaFin-Reg.-Nr. [BAFIN-NR]\nVersicherungsvermittler gem. § 34d GewO',
+      footer_copy: '© [JAHR] [FIRMENNAME]. Alle Rechte vorbehalten.', footer_impressum: 'Impressum', footer_datenschutz: 'Datenschutz',
+      footer_disclaimer: '[FIRMENNAME] [RECHTSFORM] ist registrierter Versicherungsvermittler gemäß § 34d GewO. BaFin-Reg.-Nr.: [BAFIN-NR]. Aufsichtsbehörde: [ZUSTÄNDIGE IHK], [IHK-ADRESSE]. Die angebotenen Versicherungsprodukte unterliegen den jeweiligen Versicherungsbedingungen. Es gelten die Pflichtangaben gemäß IDD (EU-Richtlinie über den Versicherungsvertrieb 2016/97/EU).'
+    },
+    en: {
+      nav_versicherungen: 'Insurance', nav_ueber_uns: 'About us', nav_faq: 'FAQ', nav_kontakt: 'Contact', nav_cta: 'Request consultation',
+      hero_tag: 'Aviation Insurance', hero_headline: 'Trust at<br>10,000 feet.',
+      hero_subtext: 'Specialized insurance solutions for private pilots, private jets, and aviation companies — from experts you can trust.',
+      hero_cta1: 'Request consultation', hero_cta2: 'Our services &rarr;',
+      trust_1: '[ZAHL]+ years of experience &nbsp;·&nbsp; In the market since [JAHR]', trust_2: 'BaFin-registered &nbsp;·&nbsp; No. [BAFIN-NR]', trust_3: 'Aviation insurance specialist in [REGION]',
+      products_tag: 'Our Services', products_h2: 'What we cover for you.', products_note: 'All insurance products are subject to the respective terms and conditions. Binding statements are only made in a personal consultation.',
+      expertise_tag: 'Why [FIRMENNAME]', expertise_h2: 'Expertise you deserve.',
+      expertise_text: '[FIRMENNAME] specializes in aviation insurance — not as a side business, but as a core competency. Since [JAHR] we have been advising private pilots, jet owners, and aviation companies in [REGION] to the standard you expect from a first-class advisor. Our direct access to Europe\'s leading aviation insurers allows us to structure solutions that standard products cannot offer.',
+      exp_p1_title: 'Specialization.', exp_p1_desc: 'Not a general broker — exclusively aviation. This focus ensures a level of advice that generalists cannot achieve.',
+      exp_p2_title: 'Network.', exp_p2_desc: 'Direct access to Europe\'s leading aviation insurers — for terms that match your individual risk profile.',
+      exp_p3_title: 'Discretion.', exp_p3_desc: 'Your data, your fleet and your insurance details remain confidential. Goes without saying — but worth mentioning.',
+      faq_tag: 'Frequently Asked Questions', faq_h2: 'Your questions.<br>Our answers.',
+      contact_tag: 'Contact', contact_h2: 'Let\'s talk.',
+      contact_label_phone: 'Phone', contact_label_email: 'Email', contact_label_address: 'Address', contact_label_bafin: 'BaFin Registration',
+      form_label_name: 'Name *', form_label_company: 'Company', form_label_email: 'Email *', form_label_phone: 'Phone', form_label_message: 'Message *',
+      form_placeholder_name: 'Your name', form_placeholder_company: 'Your company', form_placeholder_email: 'your@email.com', form_placeholder_phone: '+49 ...', form_placeholder_message: 'How can we help you?',
+      form_submit: 'Send request', form_sending: 'Sending …', form_note: 'By submitting, you agree to our privacy policy. We will get back to you within 24 hours.',
+      form_success: 'Thank you for your enquiry. We will get back to you as soon as possible.', form_alert: 'Please fill in all required fields.',
+      footer_tagline: 'Your specialist for aviation insurance in [REGION].', footer_nav_title: 'Navigation', footer_contact_title: 'Contact',
+      footer_nav_versicherungen: 'Insurance', footer_nav_ueber_uns: 'About us', footer_nav_faq: 'FAQ', footer_nav_kontakt: 'Contact', footer_nav_impressum: 'Legal notice', footer_nav_datenschutz: 'Privacy policy',
+      footer_bafin: 'BaFin Reg. No. [BAFIN-NR]\nInsurance intermediary pursuant to § 34d GewO',
+      footer_copy: '© [JAHR] [FIRMENNAME]. All rights reserved.', footer_impressum: 'Legal notice', footer_datenschutz: 'Privacy policy',
+      footer_disclaimer: '[FIRMENNAME] [RECHTSFORM] is a registered insurance intermediary pursuant to § 34d GewO. BaFin Reg. No.: [BAFIN-NR]. Supervisory authority: [ZUSTÄNDIGE IHK], [IHK-ADRESSE]. All insurance products are subject to the respective terms and conditions. Mandatory disclosures apply in accordance with IDD (EU Insurance Distribution Directive 2016/97/EU).'
+    },
+    fr: {
+      nav_versicherungen: 'Assurances', nav_ueber_uns: 'À propos', nav_faq: 'FAQ', nav_kontakt: 'Contact', nav_cta: 'Demander un conseil',
+      hero_tag: 'Assurance aérienne', hero_headline: 'Confiance à<br>10 000 pieds.',
+      hero_subtext: 'Solutions d\'assurance spécialisées pour les pilotes privés, jets privés et compagnies aériennes — par des experts en qui vous pouvez avoir confiance.',
+      hero_cta1: 'Demander un conseil', hero_cta2: 'Nos services &rarr;',
+      trust_1: '[ZAHL]+ ans d\'expérience &nbsp;·&nbsp; Sur le marché depuis [JAHR]', trust_2: 'Enregistré BaFin &nbsp;·&nbsp; N° [BAFIN-NR]', trust_3: 'Spécialiste en assurance aérienne en [REGION]',
+      products_tag: 'Nos services', products_h2: 'Ce que nous couvrons pour vous.', products_note: 'Tous les produits d\'assurance sont soumis aux conditions générales respectives. Les déclarations contraignantes ne sont faites que lors d\'une consultation personnelle.',
+      expertise_tag: 'Pourquoi [FIRMENNAME]', expertise_h2: 'L\'expertise que vous méritez.',
+      expertise_text: '[FIRMENNAME] est spécialisé dans l\'assurance aérienne — non pas en marge, mais comme compétence principale. Depuis [JAHR], nous conseillons des pilotes privés, des propriétaires de jets et des compagnies aériennes en [REGION] selon les exigences que vous attendez d\'un conseiller de premier ordre. Notre accès direct aux principaux assureurs aéronautiques européens nous permet de structurer des solutions que les produits standard ne peuvent pas offrir.',
+      exp_p1_title: 'Spécialisation.', exp_p1_desc: 'Pas un courtier généraliste — exclusivement l\'aviation. Cette focalisation garantit un niveau de conseil que les généralistes ne peuvent pas atteindre.',
+      exp_p2_title: 'Réseau.', exp_p2_desc: 'Accès direct aux principaux assureurs aéronautiques européens — pour des conditions adaptées à votre profil de risque individuel.',
+      exp_p3_title: 'Discrétion.', exp_p3_desc: 'Vos données, votre flotte et vos détails d\'assurance restent confidentiels. Évident — mais cela mérite d\'être mentionné.',
+      faq_tag: 'Questions fréquentes', faq_h2: 'Vos questions.<br>Nos réponses.',
+      contact_tag: 'Contact', contact_h2: 'Parlons.',
+      contact_label_phone: 'Téléphone', contact_label_email: 'E-mail', contact_label_address: 'Adresse', contact_label_bafin: 'Enregistrement BaFin',
+      form_label_name: 'Nom *', form_label_company: 'Entreprise', form_label_email: 'E-mail *', form_label_phone: 'Téléphone', form_label_message: 'Message *',
+      form_placeholder_name: 'Votre nom', form_placeholder_company: 'Votre entreprise', form_placeholder_email: 'votre@email.fr', form_placeholder_phone: '+49 ...', form_placeholder_message: 'Comment pouvons-nous vous aider ?',
+      form_submit: 'Envoyer la demande', form_sending: 'Envoi en cours …', form_note: 'En soumettant, vous acceptez notre politique de confidentialité. Nous vous répondrons dans les 24 heures.',
+      form_success: 'Merci pour votre demande. Nous vous répondrons dans les plus brefs délais.', form_alert: 'Veuillez remplir tous les champs obligatoires.',
+      footer_tagline: 'Votre spécialiste en assurance aérienne en [REGION].', footer_nav_title: 'Navigation', footer_contact_title: 'Contact',
+      footer_nav_versicherungen: 'Assurances', footer_nav_ueber_uns: 'À propos', footer_nav_faq: 'FAQ', footer_nav_kontakt: 'Contact', footer_nav_impressum: 'Mentions légales', footer_nav_datenschutz: 'Confidentialité',
+      footer_bafin: 'N° Reg. BaFin [BAFIN-NR]\nIntermédiaire d\'assurance conf. § 34d GewO',
+      footer_copy: '© [JAHR] [FIRMENNAME]. Tous droits réservés.', footer_impressum: 'Mentions légales', footer_datenschutz: 'Confidentialité',
+      footer_disclaimer: '[FIRMENNAME] [RECHTSFORM] est un intermédiaire d\'assurance enregistré conformément au § 34d GewO. N° Reg. BaFin : [BAFIN-NR]. Autorité de contrôle : [ZUSTÄNDIGE IHK], [IHK-ADRESSE]. Tous les produits d\'assurance sont soumis aux conditions générales respectives. Les informations obligatoires s\'appliquent conformément à la DDA (Directive européenne sur la distribution d\'assurances 2016/97/UE).'
+    },
+    es: {
+      nav_versicherungen: 'Seguros', nav_ueber_uns: 'Sobre nosotros', nav_faq: 'FAQ', nav_kontakt: 'Contacto', nav_cta: 'Solicitar consulta',
+      hero_tag: 'Seguro de aviación', hero_headline: 'Confianza a<br>10.000 pies.',
+      hero_subtext: 'Soluciones de seguros especializadas para pilotos privados, jets privados y empresas de aviación — de expertos en quienes puede confiar.',
+      hero_cta1: 'Solicitar consulta', hero_cta2: 'Nuestros servicios &rarr;',
+      trust_1: '[ZAHL]+ años de experiencia &nbsp;·&nbsp; En el mercado desde [JAHR]', trust_2: 'Registrado en BaFin &nbsp;·&nbsp; N.° [BAFIN-NR]', trust_3: 'Especialista en seguro de aviación en [REGION]',
+      products_tag: 'Nuestros servicios', products_h2: 'Lo que aseguramos para usted.', products_note: 'Todos los productos de seguros están sujetos a las condiciones generales respectivas. Las declaraciones vinculantes solo se realizan en una consulta personal.',
+      expertise_tag: 'Por qué [FIRMENNAME]', expertise_h2: 'La experiencia que merece.',
+      expertise_text: '[FIRMENNAME] está especializado en seguros de aviación — no como área periférica, sino como competencia principal. Desde [JAHR] asesoramos a pilotos privados, propietarios de jets y empresas de aviación en [REGION] con el estándar que espera de un asesor de primera clase. Nuestro acceso directo a los principales aseguradores de aviación de Europa nos permite estructurar soluciones que los productos estándar no pueden ofrecer.',
+      exp_p1_title: 'Especialización.', exp_p1_desc: 'No somos un corredor generalista — exclusivamente aviación. Esta especialización garantiza un nivel de asesoramiento que los generalistas no pueden alcanzar.',
+      exp_p2_title: 'Red.', exp_p2_desc: 'Acceso directo a los principales aseguradores de aviación de Europa — para condiciones adaptadas a su perfil de riesgo individual.',
+      exp_p3_title: 'Discreción.', exp_p3_desc: 'Sus datos, su flota y los detalles de sus seguros permanecen confidenciales. Evidente — pero merece mencionarse.',
+      faq_tag: 'Preguntas frecuentes', faq_h2: 'Sus preguntas.<br>Nuestras respuestas.',
+      contact_tag: 'Contacto', contact_h2: 'Hablemos.',
+      contact_label_phone: 'Teléfono', contact_label_email: 'Correo electrónico', contact_label_address: 'Dirección', contact_label_bafin: 'Registro BaFin',
+      form_label_name: 'Nombre *', form_label_company: 'Empresa', form_label_email: 'Correo electrónico *', form_label_phone: 'Teléfono', form_label_message: 'Mensaje *',
+      form_placeholder_name: 'Su nombre', form_placeholder_company: 'Su empresa', form_placeholder_email: 'su@correo.es', form_placeholder_phone: '+49 ...', form_placeholder_message: '¿Cómo podemos ayudarle?',
+      form_submit: 'Enviar solicitud', form_sending: 'Enviando …', form_note: 'Al enviar, acepta nuestra política de privacidad. Nos pondremos en contacto en un plazo de 24 horas.',
+      form_success: 'Gracias por su solicitud. Nos pondremos en contacto con usted lo antes posible.', form_alert: 'Por favor, complete todos los campos obligatorios.',
+      footer_tagline: 'Su especialista en seguro de aviación en [REGION].', footer_nav_title: 'Navegación', footer_contact_title: 'Contacto',
+      footer_nav_versicherungen: 'Seguros', footer_nav_ueber_uns: 'Sobre nosotros', footer_nav_faq: 'FAQ', footer_nav_kontakt: 'Contacto', footer_nav_impressum: 'Aviso legal', footer_nav_datenschutz: 'Privacidad',
+      footer_bafin: 'N.° Reg. BaFin [BAFIN-NR]\nIntermed. de seguros conf. § 34d GewO',
+      footer_copy: '© [JAHR] [FIRMENNAME]. Todos los derechos reservados.', footer_impressum: 'Aviso legal', footer_datenschutz: 'Privacidad',
+      footer_disclaimer: '[FIRMENNAME] [RECHTSFORM] es un intermediario de seguros registrado conforme al § 34d GewO. N.° Reg. BaFin: [BAFIN-NR]. Autoridad supervisora: [ZUSTÄNDIGE IHK], [IHK-ADRESSE]. Todos los productos de seguros están sujetos a las condiciones generales respectivas. Se aplican las indicaciones obligatorias conforme a la DDA (Directiva europea de distribución de seguros 2016/97/UE).'
+    },
+    zh: {
+      nav_versicherungen: '保险', nav_ueber_uns: '关于我们', nav_faq: '常见问题', nav_kontakt: '联系', nav_cta: '申请咨询',
+      hero_tag: '航空保险', hero_headline: '万米高空<br>的信任。',
+      hero_subtext: '为私人飞行员、私人飞机和航空公司提供专业保险解决方案——来自您可以信赖的专家。',
+      hero_cta1: '申请咨询', hero_cta2: '我们的服务 &rarr;',
+      trust_1: '[ZAHL]+年从业经验&nbsp;·&nbsp;自[JAHR]年起深耕市场', trust_2: 'BaFin注册&nbsp;·&nbsp;编号[BAFIN-NR]', trust_3: '[REGION]航空保险专家',
+      products_tag: '我们的服务', products_h2: '我们为您承保的内容。', products_note: '所有保险产品均受各自保险条款约束。具体承诺仅在个人咨询中作出。',
+      expertise_tag: '为什么选择[FIRMENNAME]', expertise_h2: '您值得拥有的专业知识。',
+      expertise_text: '[FIRMENNAME]专注于航空保险——不是边缘业务，而是核心专长。自[JAHR]年以来，我们以一流顾问的标准为[REGION]的私人飞行员、飞机所有者和航空公司提供专业建议。我们与欧洲领先航空保险公司的直接合作，使我们能够为您量身定制标准产品无法提供的解决方案。',
+      exp_p1_title: '专业化。', exp_p1_desc: '非综合经纪人——专注航空领域。这种专注确保了综合经纪人无法达到的专业咨询水准。',
+      exp_p2_title: '合作网络。', exp_p2_desc: '直接对接欧洲领先航空保险公司——为您的个人风险状况提供最优条款。',
+      exp_p3_title: '保密性。', exp_p3_desc: '您的数据、机队及保险详情将严格保密。不言而喻——但值得一提。',
+      faq_tag: '常见问题', faq_h2: '您的问题。<br>我们的解答。',
+      contact_tag: '联系我们', contact_h2: '让我们交流。',
+      contact_label_phone: '电话', contact_label_email: '邮箱', contact_label_address: '地址', contact_label_bafin: 'BaFin注册',
+      form_label_name: '姓名 *', form_label_company: '公司', form_label_email: '邮箱 *', form_label_phone: '电话', form_label_message: '留言 *',
+      form_placeholder_name: '您的姓名', form_placeholder_company: '您的公司', form_placeholder_email: 'your@email.com', form_placeholder_phone: '+49 ...', form_placeholder_message: '我们能为您提供什么帮助？',
+      form_submit: '发送咨询', form_sending: '发送中 …', form_note: '提交即表示您同意我们的隐私政策。我们将在24小时内与您联系。',
+      form_success: '感谢您的咨询。我们将尽快与您联系。', form_alert: '请填写所有必填字段。',
+      footer_tagline: '[REGION]航空保险专家。', footer_nav_title: '导航', footer_contact_title: '联系方式',
+      footer_nav_versicherungen: '保险', footer_nav_ueber_uns: '关于我们', footer_nav_faq: '常见问题', footer_nav_kontakt: '联系', footer_nav_impressum: '法律声明', footer_nav_datenschutz: '隐私政策',
+      footer_bafin: 'BaFin注册号 [BAFIN-NR]\n持§ 34d GewO保险中介牌照',
+      footer_copy: '© [JAHR] [FIRMENNAME]。保留所有权利。', footer_impressum: '法律声明', footer_datenschutz: '隐私政策',
+      footer_disclaimer: '[FIRMENNAME] [RECHTSFORM]是依据§ 34d GewO注册的保险中介机构。BaFin注册号：[BAFIN-NR]。监管机构：[ZUSTÄNDIGE IHK]，[IHK-ADRESSE]。所有保险产品均受各自保险条款约束。须遵守IDD（欧盟保险分销指令2016/97/EU）规定的强制信息披露要求。'
+    }
+  };
+
+  function q(s) { return document.querySelector(s); }
+  function qa(s) { return document.querySelectorAll(s); }
+
+  window.setLanguage = function(lang) {
+    if (!t[lang]) return;
+    currentLang = lang;
+    var tr = t[lang];
+    document.documentElement.lang = lang;
+
+    document.getElementById('langCurrentFlag').textContent = flags[lang];
+    document.getElementById('langCurrentCode').textContent = codes[lang];
+    qa('.lang-switcher__option').forEach(function(o) { o.classList.toggle('active', o.getAttribute('data-lang') === lang); });
+    document.getElementById('langSwitcher').classList.remove('open');
+    document.getElementById('langBtn').setAttribute('aria-expanded', 'false');
+
+    // Nav
+    var nl = qa('.nav__links a');
+    if (nl[0]) nl[0].textContent = tr.nav_versicherungen;
+    if (nl[1]) nl[1].textContent = tr.nav_ueber_uns;
+    if (nl[2]) nl[2].textContent = tr.nav_faq;
+    if (nl[3]) nl[3].textContent = tr.nav_kontakt;
+    if (nl[4]) nl[4].textContent = tr.nav_cta;
+    var mm = qa('#mobileMenu a');
+    if (mm[0]) mm[0].textContent = tr.nav_versicherungen;
+    if (mm[1]) mm[1].textContent = tr.nav_ueber_uns;
+    if (mm[2]) mm[2].textContent = tr.nav_faq;
+    if (mm[3]) mm[3].textContent = tr.nav_kontakt;
+    if (mm[4]) mm[4].textContent = tr.nav_cta;
+
+    // Hero
+    var hTag = q('.hero .tag'); if (hTag) hTag.textContent = tr.hero_tag;
+    var hH1  = q('.hero__headline'); if (hH1) hH1.innerHTML = tr.hero_headline;
+    var hSub = q('.hero__subtext'); if (hSub) hSub.textContent = tr.hero_subtext;
+    var hC1  = q('.hero__actions .btn--primary'); if (hC1) hC1.textContent = tr.hero_cta1;
+    var hC2  = q('.hero__actions .btn--ghost');   if (hC2) hC2.innerHTML  = tr.hero_cta2;
+
+    // Trust bar
+    var ti = qa('.trust-bar__item');
+    if (ti[0]) ti[0].innerHTML = tr.trust_1;
+    if (ti[1]) ti[1].innerHTML = tr.trust_2;
+    if (ti[2]) ti[2].innerHTML = tr.trust_3;
+
+    // Products
+    var ps = q('#versicherungen');
+    if (ps) {
+      var pTag = ps.querySelector('.tag'); if (pTag) pTag.textContent = tr.products_tag;
+      var pH2  = ps.querySelector('h2');  if (pH2)  pH2.textContent  = tr.products_h2;
+      var pN   = ps.querySelector('.products__note'); if (pN) pN.textContent = tr.products_note;
+    }
+
+    // Expertise
+    var es = q('#ueber-uns');
+    if (es) {
+      var eTag = es.querySelector('.tag'); if (eTag) eTag.textContent = tr.expertise_tag;
+      var eH2  = es.querySelector('.expertise__headline'); if (eH2) eH2.textContent = tr.expertise_h2;
+      var eTx  = es.querySelector('.expertise__text'); if (eTx) eTx.textContent = tr.expertise_text;
+      var ep   = es.querySelectorAll('.expertise__point');
+      if (ep[0]) { ep[0].querySelector('.expertise__point-title').textContent = tr.exp_p1_title; ep[0].querySelector('.expertise__point-desc').textContent = tr.exp_p1_desc; }
+      if (ep[1]) { ep[1].querySelector('.expertise__point-title').textContent = tr.exp_p2_title; ep[1].querySelector('.expertise__point-desc').textContent = tr.exp_p2_desc; }
+      if (ep[2]) { ep[2].querySelector('.expertise__point-title').textContent = tr.exp_p3_title; ep[2].querySelector('.expertise__point-desc').textContent = tr.exp_p3_desc; }
+    }
+
+    // FAQ
+    var fs = q('#faq');
+    if (fs) {
+      var fTag = fs.querySelector('.tag'); if (fTag) fTag.textContent = tr.faq_tag;
+      var fH2  = fs.querySelector('h2');  if (fH2)  fH2.innerHTML   = tr.faq_h2;
+    }
+
+    // Contact
+    var cs = q('#kontakt');
+    if (cs) {
+      var cTag = cs.querySelector('.tag'); if (cTag) cTag.textContent = tr.contact_tag;
+      var cH2  = cs.querySelector('h2');  if (cH2)  cH2.textContent  = tr.contact_h2;
+      var cl   = cs.querySelectorAll('.contact__label');
+      if (cl[0]) cl[0].textContent = tr.contact_label_phone;
+      if (cl[1]) cl[1].textContent = tr.contact_label_email;
+      if (cl[2]) cl[2].textContent = tr.contact_label_address;
+      if (cl[3]) cl[3].textContent = tr.contact_label_bafin;
+      var fl = cs.querySelectorAll('.form-field label');
+      if (fl[0]) fl[0].textContent = tr.form_label_name;
+      if (fl[1]) fl[1].textContent = tr.form_label_company;
+      if (fl[2]) fl[2].textContent = tr.form_label_email;
+      if (fl[3]) fl[3].textContent = tr.form_label_phone;
+      if (fl[4]) fl[4].textContent = tr.form_label_message;
+      var fn = document.getElementById('f-name');    if (fn) fn.placeholder = tr.form_placeholder_name;
+      var fc = document.getElementById('f-company'); if (fc) fc.placeholder = tr.form_placeholder_company;
+      var fe = document.getElementById('f-email');   if (fe) fe.placeholder = tr.form_placeholder_email;
+      var fp = document.getElementById('f-phone');   if (fp) fp.placeholder = tr.form_placeholder_phone;
+      var fm = document.getElementById('f-message'); if (fm) fm.placeholder = tr.form_placeholder_message;
+      var sb = document.getElementById('submitBtn'); if (sb) sb.textContent = tr.form_submit;
+      var fn2 = cs.querySelector('.form-note'); if (fn2) fn2.textContent = tr.form_note;
+      var fs2 = document.getElementById('form-success'); if (fs2) fs2.textContent = tr.form_success;
+    }
+
+    // Footer
+    var ft = q('.footer');
+    if (ft) {
+      var ftg = ft.querySelector('.footer__tagline'); if (ftg) ftg.textContent = tr.footer_tagline;
+      var fct = ft.querySelectorAll('.footer__col-title');
+      if (fct[0]) fct[0].textContent = tr.footer_nav_title;
+      if (fct[1]) fct[1].textContent = tr.footer_contact_title;
+      var fnl = ft.querySelectorAll('.footer__nav a');
+      if (fnl[0]) fnl[0].textContent = tr.footer_nav_versicherungen;
+      if (fnl[1]) fnl[1].textContent = tr.footer_nav_ueber_uns;
+      if (fnl[2]) fnl[2].textContent = tr.footer_nav_faq;
+      if (fnl[3]) fnl[3].textContent = tr.footer_nav_kontakt;
+      if (fnl[4]) fnl[4].textContent = tr.footer_nav_impressum;
+      if (fnl[5]) fnl[5].textContent = tr.footer_nav_datenschutz;
+      var fbf = ft.querySelector('.footer__bafin'); if (fbf) fbf.innerHTML = tr.footer_bafin.replace('\n', '<br>');
+      var fcp = ft.querySelector('.footer__copy'); if (fcp) fcp.textContent = tr.footer_copy;
+      var fll = ft.querySelectorAll('.footer__legal-links a');
+      if (fll[0]) fll[0].textContent = tr.footer_impressum;
+      if (fll[1]) fll[1].textContent = tr.footer_datenschutz;
+      var fds = ft.querySelector('.footer__disclaimer'); if (fds) fds.textContent = tr.footer_disclaimer;
+    }
+
+    window._formAlert   = tr.form_alert;
+    window._formSending = tr.form_sending;
+    window._formSubmit  = tr.form_submit;
+  };
+
+  // Dropdown toggle
+  var langBtn      = document.getElementById('langBtn');
+  var langSwitcher = document.getElementById('langSwitcher');
+  langBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var open = langSwitcher.classList.toggle('open');
+    langBtn.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', function() {
+    langSwitcher.classList.remove('open');
+    langBtn.setAttribute('aria-expanded', 'false');
+  });
+  langSwitcher.querySelector('.lang-switcher__dropdown').addEventListener('click', function(e) { e.stopPropagation(); });
+
+  // Init German defaults
+  window._formAlert   = t.de.form_alert;
+  window._formSending = t.de.form_sending;
+  window._formSubmit  = t.de.form_submit;
+})();
 </script>
 
 </body>
